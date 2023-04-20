@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "129996174650",
+    "project_id": "shohoz-sheba",
+    "storage_bucket": "shohoz-sheba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129996174650:android:a59a2d287c8929b359cc03",
+        "android_client_info": {
+          "package_name": "com.userapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129996174650-etl3rai21fql983dpmm5f761evlm05bl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwNuVstMAqKW0DotfqxVDzbwx_O1PL2lA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129996174650-etl3rai21fql983dpmm5f761evlm05bl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,5 @@
 {
-  "name": "UserApp",
+  "name": "Shohozseba",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,8 +10,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^7.0.1",
     "react": "18.2.0",
-    "react-native": "0.71.2"
+    "react-native": "0.71.2",
+    "react-native-a11y-slider": "^1.2.0",
+    "react-native-bootsplash": "^4.6.0",
+    "react-native-calendars": "^1.1295.0",
+    "react-native-maps": "^1.5.0",
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -1,5 +1,12 @@
 apply plugin: "com.android.application"
+apply plugin:'com.google.gms.google-services'
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf','AntDesign.ttf','Entypo.ttf','Feather.ttf','FontAwesome.ttf','FontAwesome5.ttf','FontAwesome5Brands.ttf','Fontisto.ttf','Foundation.ttf','Ionicons.ttf','MaterialCommunityIcons.ttf','Octicons.ttf','SimpleLineIcons.ttf','Zocial.ttf' ] // Name of the font files you want to copy
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply plugin: "com.facebook.react"
+
 
 import com.android.build.OutputFile
 
@@ -149,6 +156,7 @@ android {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
@@ -158,6 +166,10 @@ dependencies {
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
+    implementation 'com.google.firebase:firebase-analytics'
+
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.0") // Add this line
 
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
