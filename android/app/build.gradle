@@ -1,11 +1,12 @@
 apply plugin: "com.android.application"
 apply plugin:'com.google.gms.google-services'
+apply plugin: "com.facebook.react"
 project.ext.vectoricons = [
     iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf','AntDesign.ttf','Entypo.ttf','Feather.ttf','FontAwesome.ttf','FontAwesome5.ttf','FontAwesome5Brands.ttf','Fontisto.ttf','Foundation.ttf','Ionicons.ttf','MaterialCommunityIcons.ttf','Octicons.ttf','SimpleLineIcons.ttf','Zocial.ttf' ] // Name of the font files you want to copy
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-apply plugin: "com.facebook.react"
+
 
 
 import com.android.build.OutputFile
