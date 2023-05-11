@@ -9,9 +9,15 @@ const data = {
     'email':'',
     'id':'',
     'lat':'',
+    'lng':'',
     'details':"",
     'tradeLicance':'',
-    'profilePicture':''
+    'profilePicture':'',
+    'loadingR':false,
+    'agoraAppId':'85944551dccc49a687206aebdccfc76c',
+    'agoraToken':'007eJxTYNhSEyduUSpx+JhUtv2NKraoSy5Tvj315VfJlXC5dfOulrsCg4WppYmJqalhSnJysollopmFuZGBWWJqEpCflmxulpwtEpjSEMjIcKDGkYWRAQJBfDaG3My8jMQqBgYABJgejw==',
+    'agoraAppSecret':'b6106ad415624a19afed254a9f56b6ba',
+    'channel':'minhaz'
 };
 
 const reducer = (state = data, action:any) => {
@@ -22,6 +28,17 @@ const reducer = (state = data, action:any) => {
             return {
                 ...state,
                 loggedIn: action.logged
+            };
+        case 'LOADING':
+            return {
+                ...state,
+                loadingR: action.loading
+            };
+        case 'CHANGE_LOCATION':
+            return{
+                ...state,
+                lat:action.logged.latitude,
+                lng:action.logged.longitude,
             };
         case 'LOGIN':
             AsyncStorage.setItem('loggedIn', "true");

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet,StatusBar,FlatList} from 'react-native'
+import { Text, View, StyleSheet,StatusBar,FlatList,ScrollView,Dimensions,Image} from 'react-native'
 import RNBootSplash from "react-native-bootsplash";
 import {ThemeButton,PlusButton,MinusButton} from "../../components/Buttons"
 import { colors } from '../../constants/colors';
@@ -10,6 +10,7 @@ import { typo } from '../../ui/typo';
 import { BasicModal } from '../../components/Modals';
 import {CardFullWidth,CardHalfWidth} from "../../components/Cards"
 import Slider from "react-native-a11y-slider";
+import StackHeader from '../../components/StackHeader';
 
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 interface Props {
@@ -99,8 +100,12 @@ export default class DDC extends Component<Props,State> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.mainContainer}>
+        
+        <ScrollView contentContainerStyle={styles.container}>
         <StatusBar barStyle={'dark-content'} translucent={false} backgroundColor={colors.white} />
+        <Image source={require('../../assets/bgoverlay.png')} style={{flex:1,height:Dimensions.get('window').height,width:Dimensions.get("window").width,position:'absolute',top:0,left:0,opacity:0.2}} />
+        <StackHeader navigation={this.props.navigation} />
         <Text style={[typo.h1,{marginTop:40,marginBottom:10}]}>DELIVERY DATE CALCULATOR</Text>
         <CardFullWidth bgColor={colors.white}>
         <Text style={typo.h4r}>Select first day at your last period cycle</Text>
@@ -146,21 +151,23 @@ export default class DDC extends Component<Props,State> {
         </View>     
         </CardFullWidth>
           </BasicModal>      
-      </View>
+      </ScrollView></View>
+      
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container:{
+  mainContainer:{
     flex:1,
     backgroundColor:colors.white
   },
+  container:{
+    minHeight:Dimensions.get("window").height,
+    minWidth:Dimensions.get("window").width
+  },
   footerButton:{
-    position:'absolute',
     width:sizes.fullWidth,
-    bottom:0,
-    left:0
   },
   sliderTrack:{
     backgroundColor:colors.theme,

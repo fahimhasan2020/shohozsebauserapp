@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet,StatusBar,FlatList} from 'react-native'
+import { Text, View, StyleSheet,StatusBar,FlatList,Pressable,Image,Dimensions} from 'react-native'
 import RNBootSplash from "react-native-bootsplash";
 import {ThemeButton,PlusButton,MinusButton} from "../../components/Buttons"
 import { colors } from '../../constants/colors';
@@ -12,6 +12,7 @@ import {CardFullWidth,CardHalfWidth} from "../../components/Cards"
 import Slider from "react-native-a11y-slider";
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
+import StackHeader from '../../components/StackHeader';
 interface Props {
 
 }
@@ -49,7 +50,7 @@ export default class App extends Component<Props,State> {
       height:80,
       age:20,
       weight:7,
-      modalVisible:true,
+      modalVisible:false,
       gender:'',
       result:'',
       selected:'',
@@ -120,6 +121,8 @@ export default class App extends Component<Props,State> {
     return (
       <View style={styles.container}>
         <StatusBar barStyle={'dark-content'} translucent={false} backgroundColor={colors.white} />
+        <Image source={require('../../assets/bgoverlay.png')} style={{flex:1,height:Dimensions.get('window').height,width:Dimensions.get("window").width,position:'absolute',top:0,left:0,opacity:0.2}} />
+        <StackHeader navigation={this.props.navigation} />
         <Text style={[typo.h1,{marginTop:40,marginBottom:10}]}>Period Tracker</Text>
         <CardFullWidth bgColor={colors.white}>
         <Text style={typo.p}>Select first day at your last period cycle</Text>

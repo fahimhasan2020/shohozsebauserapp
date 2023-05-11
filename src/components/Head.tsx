@@ -5,11 +5,12 @@ import { colors } from '../constants/colors'
 import { shadows } from '../ui/shadow'
 export default class Head extends Component {
   render() {
+    const {navigation} = this.props;
     return (
       <View style={[styles.container,shadows.largeShadow]}>
-        <Pressable><Feather name='menu' size={30} color={colors.themeDeep} /></Pressable>
+        <Pressable onPress={()=>{navigation.openDrawer()}}><Feather name='menu' size={30} color={colors.themeDeep} /></Pressable>
         <Image source={require('../assets/croppedlogo.png')} style={styles.centralLogo} />
-        <Pressable><Feather name='shopping-cart' size={30} color={colors.themeDeep} /></Pressable>
+        <Pressable onPress={()=>navigation.navigate('NoItemAvailable',{ title: 'Cart', })}><Feather name='shopping-cart' size={30} color={colors.themeDeep} /></Pressable>
       </View>
     )
   }

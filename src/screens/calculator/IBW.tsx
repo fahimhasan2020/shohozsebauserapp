@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet,StatusBar,FlatList} from 'react-native'
+import { Text, View, StyleSheet,StatusBar,FlatList,Image,Dimensions} from 'react-native'
 import RNBootSplash from "react-native-bootsplash";
 import {ThemeButton,PlusButton,MinusButton} from "../../components/Buttons"
 import { colors } from '../../constants/colors';
@@ -10,6 +10,7 @@ import { typo } from '../../ui/typo';
 import { BasicModal } from '../../components/Modals';
 import {CardFullWidth,CardHalfWidth} from "../../components/Cards"
 import Slider from "react-native-a11y-slider";
+import StackHeader from '../../components/StackHeader';
 interface Props {
 
 }
@@ -97,6 +98,8 @@ export default class IBW extends Component<Props,State> {
     return (
       <View style={styles.container}>
         <StatusBar barStyle={'dark-content'} translucent={false} backgroundColor={colors.white} />
+        <Image source={require('../../assets/bgoverlay.png')} style={{flex:1,height:Dimensions.get('window').height,width:Dimensions.get("window").width,position:'absolute',top:0,left:0,opacity:0.2}} />
+        <StackHeader navigation={this.props.navigation} />
         <Text style={[typo.h1,{marginTop:40,marginBottom:40}]}>IBW CALCULATOR</Text>
         <View style={[row]}>
           <IconOnlyCardButton fgColor={this.state.maleCardTextBg} bgColor={this.state.maleCardBg} title="Male" onPress={()=>{this.handlePressCard('male')}} name="male" />

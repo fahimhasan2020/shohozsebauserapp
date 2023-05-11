@@ -37,3 +37,17 @@ export const BasicModal: React.FC<ModalProps> = ({  visibility = false ,title,ch
         </View>
       </Modal>);
   };
+export const CardModal: React.FC<ModalProps> = ({  visibility = false,children,modalClose}) => {
+    return (<Modal
+        animationType="slide"
+        transparent={false}
+        visible={visibility}
+        onRequestClose={modalClose}
+      >
+        <View style={{ marginTop: 22,flex:1}}>
+          <View style={{flex:1}}>
+            {children}            
+          </View>
+        </View>
+      </Modal>);
+  };

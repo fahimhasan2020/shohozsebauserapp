@@ -64,7 +64,8 @@ if(value !== null) {
             ToastAndroid.SHORT,
             ToastAndroid.CENTER
           );
-          this.props.navigation.navigate('Login')
+          this.props.navigation.navigate('Login');
+          
         })
       }else if(value === "false"){
         setTimeout(()=>{ this.props.changeLogged(false);
@@ -90,7 +91,7 @@ if(value !== null) {
            <Animated.Text style={{fontSize:20,fontWeight:'bold',color:'purple',textTransform:'uppercase',opacity:this.state.logoTextOpacity}}>Shohoz Seba</Animated.Text>
         </View>
        
-        <Animated.Text style={{position:'absolute',bottom:20,alignSelf:'center',fontWeight:'bold',color:'#ccc',opacity:this.state.logoTextOpacity}}>Developer By Minhajul Abedin</Animated.Text>
+        <Animated.Text style={{position:'absolute',bottom:20,alignSelf:'center',fontWeight:'bold',color:'#ccc',opacity:this.state.logoTextOpacity}}>Developer By Dr. Minhaz</Animated.Text>
       </View>
     )
   }

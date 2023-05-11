@@ -11,5 +11,13 @@ import PDT from "../screens/calculator/PDT";
 import Login from "../screens/auth/Login";
 import IntroSlider from "../screens/initial/IntroSlider";
 import Splash from "../screens/initial/Splash";
+import DoctorCategories from "../screens/basic/DoctorCategories";
+import NearestDoctors from "../screens/basic/NearestDoctors";
+import NoItemAvailable from "../screens/basic/NoItemAvailable";
+import Profile from "../screens/basic/Profile";
+import Search from "../screens/basic/Search";
+import SingleDoctorCategory from "../screens/basic/SingleDoctorCategory";
+import DoctorSingle from "../screens/basic/DoctorSingle";
+import CallScreen from "../screens/basic/CallScreen";
 
-export {Home,History,Cart,Medicine,BloodDonation,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider,Splash}
+export {Home,History,CallScreen,Search,DoctorSingle,Cart,SingleDoctorCategory,Medicine,BloodDonation,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider,Splash,DoctorCategories,NearestDoctors,NoItemAvailable,Profile}

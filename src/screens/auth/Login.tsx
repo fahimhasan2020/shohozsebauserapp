@@ -72,30 +72,47 @@ export class Login extends Component {
 
 
   loginWithGoogle = async() =>{
-    console.log('started');
     try {
       await GoogleSignin.configure({
-        webClientId: '650057854720-pr1tgo7fnjvm6kb7nff0ip8nf7mdf6u7.apps.googleusercontent.com',
-        offlineAccess:true,
+        webClientId: '129996174650-etl3rai21fql983dpmm5f761evlm05bl.apps.googleusercontent.com',
         forceCodeForRefreshToken: true,
        });
-      
+     
       await GoogleSignin.hasPlayServices();
       
       const userInfo = await GoogleSignin.signIn();
       this.setState({ userInfo });
-      const currentUser = await GoogleSignin.getCurrentUser();
-      this.setState({ currentUser });
-      console.log(this.state.currentUser);
+      if(userInfo.hasOwnProperty('idToken')){
+          console.log(userInfo);
+          fetch(this.props.host+'social/login',{
+            method:"POST",
+            headers:{"Content-type":"application/json","Accept":"application/json"},
+            body:JSON.stringify({
+              email:'gl'+userInfo.user.id,
+              first_name:userInfo.user.givenName,
+              last_name:userInfo.user.familyName,
+              profile_picture:'https://i.pinimg.com/736x/15/ca/0c/15ca0c352322cb9101e20e423ec34554.jpg'
+            })
+          }).then((response)=>response.json()).then((responseJson)=>{
+            console.log(responseJson);
+            if(responseJson.hasOwnProperty("token")){
+              this.props.changeAccessToken(responseJson.token);
+              this.props.changeProfile(responseJson.user);
+              this.props.changeLogged(true);
+            }
+          })
+        
+      }
+      
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
+        console.log('error cancel');
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
+        console.log('error progress');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
+        console.log('error service unavailable');
       } else {
-        // some other error happened
+        console.log(error);
       }
     }
 

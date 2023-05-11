@@ -19,6 +19,11 @@ export const CardHalfWidth: React.FC<CardFullWidthProps> = ({  bgColor,children}
     {children}
   </View>);
 };
+export const CardHalfWidthNp: React.FC<CardFullWidthProps> = ({  bgColor,children}) => {
+  return (<View style={[styles.cardUiNpHalf,{backgroundColor:bgColor},shadows.smallShadow]}>
+    {children}
+  </View>);
+};
 
 const styles = StyleSheet.create({
     cardUi:{
@@ -27,7 +32,16 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         alignItems:'center',
         justifyContent:'center',
-        marginBottom:10
+        marginBottom:10,
+        borderRadius:5
+    },
+    cardUiNpHalf:{
+        alignSelf:'center',
+        alignItems:'center',
+        justifyContent:'center',
+        marginBottom:10,
+        borderRadius:5,
+        margin:10
     },
     cardUiHalf:{
         padding:10,
@@ -35,6 +49,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         alignItems:'center',
         justifyContent:'center',
-        marginBottom:10
+        marginBottom:10,
+        borderRadius:5
     }
   });

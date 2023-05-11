@@ -6,63 +6,72 @@ export const typo = {
         fontWeight:'bold',
         color:colors.greyDeep,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h1:{
         fontSize:20,
         fontWeight:'bold',
         color:colors.theme,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h2:{
         fontSize:18,
         fontWeight:'bold',
         color:colors.theme,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h3:{
         fontSize:16,
         fontWeight:'bold',
         color:colors.theme,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h4:{
-        fontSize:14,
+        fontSize:12,
         fontWeight:'bold',
         color:colors.theme,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h1r:{
         fontSize:20,
         fontWeight:'bold',
         color:colors.greyDeep,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h2r:{
         fontSize:18,
         fontWeight:'bold',
         color:colors.greyDeep,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h3r:{
         fontSize:16,
         fontWeight:'bold',
         color:colors.greyDeep,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     h4r:{
-        fontSize:14,
+        fontSize:12,
         fontWeight:'bold',
         color:colors.greyDeep,
         textTransform:'uppercase',
-        alignSelf:'center'
+        alignSelf:'center',
+        textAlign:'center'
     },
     p:{
         fontSize:14,

@@ -7,6 +7,51 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:129996174650:android:93910c5ad619850e59cc03",
+        "android_client_info": {
+          "package_name": "com.shohozseba.userapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129996174650-cv5k5knoqo3pb3420rjpp3csfqarm5tq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shohozseba.userapp",
+            "certificate_hash": "235a6c823ba0d43684ea3a880e4420aca7131d9e"
+          }
+        },
+        {
+          "client_id": "129996174650-ne37f2lf3l9cdrpoir7sdgjmr4k6fpi0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shohozseba.userapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "129996174650-etl3rai21fql983dpmm5f761evlm05bl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwNuVstMAqKW0DotfqxVDzbwx_O1PL2lA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129996174650-etl3rai21fql983dpmm5f761evlm05bl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:129996174650:android:a59a2d287c8929b359cc03",
         "android_client_info": {
           "package_name": "com.userapp"
