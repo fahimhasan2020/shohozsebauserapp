@@ -6,6 +6,7 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { colors } from '../../constants/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const slides = [
   {
     key: 'one',
@@ -57,17 +58,11 @@ export default class IntroSlider extends Component {
       </View>
     );
   }
-  _onDone = () => {
+  _onDone = async() => {
+    console.log('don clicked');
+    const setFirstTime = await AsyncStorage.setItem("firstTime","false");
+    this.props.navigation.navigate("Login");
     this.setState({ showRealApp: true });
-  }
-  _nextButton = () =>{
-    return(<TouchableOpacity style={styles.nextButton}><Text style={{color:colors.white}}>Next</Text></TouchableOpacity>)
-  }
-  _prevButton = () =>{
-    return(<TouchableOpacity style={styles.nextButton}><Text style={{color:colors.white}}>Previous</Text></TouchableOpacity>)
-  }
-  _doneButton = () =>{
-    return(<TouchableOpacity style={styles.nextButton}><Text style={{color:colors.white}}>Done</Text></TouchableOpacity>)
   }
 
   _renderNextButton = () => {

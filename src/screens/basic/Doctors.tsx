@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View,ScrollView,Dimensions,TextInput,Pressable,Image } from 'react-native'
+import { Text, StyleSheet, View,ScrollView,Dimensions,TextInput,Pressable,Image,PermissionsAndroid,ToastAndroid } from 'react-native'
 import Head from '../../components/Head'
 import { colors } from '../../constants/colors';
 import { typo } from '../../ui/typo';
@@ -18,6 +18,10 @@ export default class Doctors extends Component {
     // Call your function here
   }
 
+  goTODoctorScreen =() =>{
+    this.props.navigation.navigate('DoctorSingle');
+  }
+
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -28,7 +32,7 @@ export default class Doctors extends Component {
         <View style={[paddingBig]}>
           <Text style={typo.p}>Online now</Text>
           <CardHalfWidthNp bgColor={'white'}>
-                <Pressable onPress={()=>{this.props.navigation.navigate('DoctorSingle')}}><Image source={require('../../assets/mydoctor.jpeg')} style={{height:160,width:160,borderTopLeftRadius:10,borderTopRightRadius:10}} />
+                <Pressable onPress={()=>{this.goTODoctorScreen()}}><Image source={require('../../assets/mydoctor.jpeg')} style={{height:160,width:160,borderTopLeftRadius:10,borderTopRightRadius:10}} />
                 <View>
                     <Text style={[typo.h4r,marginTopMedium]}>Eye Specialist (MBBS)</Text>
                     <View style={{flexDirection:'row',marginTop:5,marginBottom:5}}>

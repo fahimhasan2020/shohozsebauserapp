@@ -47,6 +47,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
+    "sslcommerz-lts": "^1.1.0",
     "zego-express-engine-reactnative": "3.2.0"
   },
   "devDependencies": {

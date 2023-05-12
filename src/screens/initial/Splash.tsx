@@ -26,6 +26,7 @@ export class Splash extends Component {
   {
     toValue: 20,
     duration: 3000, 
+    useNativeDriver: true
   }
 ).start()
   Animated.timing(
@@ -37,11 +38,14 @@ export class Splash extends Component {
   }
 ).start()
 const value = await AsyncStorage.getItem('loggedIn');
-if(value !== null) {
-  console.log(value);
+const firstTime = await AsyncStorage.getItem('firstTime');
+if(value !== null && value !== undefined && value !== '') {
+      console.log('Login value is ',value);
+      console.log('First time value is ',firstTime);
       if(value === "true"){
         const userId =  await AsyncStorage.getItem('token');
-        fetch(this.props.host+'token/verify',{
+        if(userId !== undefined && userId !== null && userId !== ''){
+          fetch(this.props.host+'token/verify',{
           method:"POST",
           headers: {
             'Accept': 'application/json',
@@ -67,14 +71,30 @@ if(value !== null) {
           this.props.navigation.navigate('Login');
           
         })
+        }
+        
       }else if(value === "false"){
         setTimeout(()=>{ this.props.changeLogged(false);
         this.props.navigation.navigate('Login')},2000);
        
       }
   }else{
-    AsyncStorage.setItem('loggedIn', "false");
-    this.props.navigation.navigate('Login')
+    if(firstTime !== null && firstTime !== '' && firstTime !== undefined ){
+      if(firstTime === 'true'){
+        AsyncStorage.setItem('loggedIn', "false");
+        this.props.navigation.navigate("IntroSlider");
+      }else{
+        AsyncStorage.setItem('loggedIn', "false");
+        AsyncStorage.setItem('firstTime', "false");
+        this.props.navigation.navigate("Login");
+      }
+      
+    }else{
+      AsyncStorage.setItem('loggedIn', "false");
+      AsyncStorage.setItem('firstTime', "true");
+      this.props.navigation.navigate("IntroSlider");
+    }
+    
   }
   }
   

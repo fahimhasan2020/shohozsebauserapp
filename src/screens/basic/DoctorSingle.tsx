@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View,Image,Dimensions,ToastAndroid } from 'react-native'
+import { Text, StyleSheet, View,Image,Dimensions,ToastAndroid,PermissionsAndroid } from 'react-native'
 import StackHeaderFixed from '../../components/StackHeaderFixed'
 import { colors } from '../../constants/colors'
 import { CardHalfWidthNp } from '../../components/Cards'
@@ -43,13 +43,40 @@ export default class DoctorSingle extends Component {
         </View>       
         </View>
         <View style={{position:'absolute',bottom:20,left:0,width:'100%'}}>
-            <ThemeButton title="Call Now" onPress={()=>{
+            <ThemeButton title="Call Now" onPress={async()=>{
                         this.setState({loading:true});
-                        setTimeout(()=>{
-                            //ToastAndroid.show("Server error",ToastAndroid.SHORT);
-                            this.setState({loading:false});
-                            this.props.navigation.navigate('CallScreen');
-                        },3000)
+                        try {
+                            const permissions = [
+                              PermissionsAndroid.PERMISSIONS.CAMERA,
+                              PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+                              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                            ];
+                            const granted = await PermissionsAndroid.requestMultiple(permissions,{
+                              title: 'Permission Request',
+                              message: 'This app needs access to your camera, microphone, and storage.',
+                              buttonPositive: 'Ok',
+                              buttonNegative: 'Cancel',
+                            });
+                        
+                            if (
+                              granted[PermissionsAndroid.PERMISSIONS.CAMERA] === PermissionsAndroid.RESULTS.GRANTED &&
+                              granted[PermissionsAndroid.PERMISSIONS.RECORD_AUDIO] === PermissionsAndroid.RESULTS.GRANTED &&
+                              granted[PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE] === PermissionsAndroid.RESULTS.GRANTED
+                            ) {
+                                setTimeout(()=>{
+                                    
+                                    this.setState({loading:false});
+                                    this.props.navigation.navigate('CallScreen');
+                                },3000);
+                            } else {
+                              console.log('Some permissions denied');
+                              ToastAndroid.show("Permission denied",ToastAndroid.CENTER);
+                            }
+                          } catch (err) {
+                            console.warn(err);
+                          }
+                        
+                       
                         }} loading={this.state.loading} />
         </View>
        

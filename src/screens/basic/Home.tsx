@@ -75,7 +75,7 @@ class Home extends Component {
         <Head navigation={this.props.navigation} />
 
         {/* <Pressable onPress={()=>{this.props.logout(false)}}><Text>Hi</Text></Pressable> */}
-        <Pressable style={styles.location}>
+        <Pressable onPress={()=>{this.props.navigation.navigate('LocationSet')}} style={styles.location}>
           <Entypo name="location-pin" size={20} color={colors.theme} />
           <Text style={[typo.p,marginLeftSmall]}>{this.state.locationName}</Text>
         </Pressable>
