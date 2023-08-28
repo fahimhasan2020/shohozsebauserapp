@@ -32,12 +32,14 @@ export class Login extends Component {
   }
 
   loginWithFacebook = () =>{
+    
     console.log('called auto');
     LoginManager.logInWithPermissions(["public_profile"]).then(
       (result)=> {
         if (result.isCancelled) {
           console.log("Login cancelled");
         } else {
+          this.props.changeLoading(true);
           const currentProfile = Profile.getCurrentProfile().then(
             (currentProfile)=> {
               if (currentProfile) {
@@ -57,6 +59,9 @@ export class Login extends Component {
                     this.props.changeAccessToken(responseJson.token);
                     this.props.changeProfile(responseJson.user);
                     this.props.changeLogged(true);
+                    this.props.changeLoading(false);
+                  }else{
+                    this.props.changeLoading(false);
                   }
                 })
               }
@@ -64,8 +69,9 @@ export class Login extends Component {
           );
         }
       },
-      function(error) {
+      (error)=> {
         console.log("Login fail with error: " + error);
+        this.props.changeLoading(false);
       }
     );
   }
@@ -262,8 +268,10 @@ const mapDispatchToProps = dispatch => {
       changeLogged : (value) => {dispatch({type:'LOGIN',logged: value})},
       changeProfile : (value) => {dispatch({type:'PROFILE_CHANGE',user: value})},
       changeActivity : (value) => {dispatch({type:'CHANGE_ACTIVITY',stata: value})},
+      changeLoading : (value) => {dispatch({type:'CHANGE_Loading',loading: value})},
   };
 };
+
 
 const mapStateToProps = state => {
   return {

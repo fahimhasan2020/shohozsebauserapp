@@ -14,7 +14,7 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import {connect} from "react-redux"
 import store from "../store/store"
 import Loader from '../components/Loader'
-import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen} from "./Src"
+import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen} from "./Src"
 import { colors } from '../constants/colors'
 const StackLogin = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -145,6 +145,7 @@ function HomeNavigations() {
         <StackLogin.Screen name="DoctorSingle" component={DoctorSingle} />
         <StackLogin.Screen name="CallScreen" component={CallScreen} />
         <StackLogin.Screen name="LocationSet" component={LocationSet} />
+        <StackLogin.Screen name="PaymentScreen" component={PaymentScreen} />
       </StackLogin.Navigator>)
     }
 

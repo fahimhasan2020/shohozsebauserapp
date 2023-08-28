@@ -101,7 +101,14 @@ class History extends Component {
                 this.setState({singlePost:true});
               }}
               style={{height:220,width:180}}>
-                <Image source={{uri:item._embedded['wp:featuredmedia'][0].source_url}} style={styles.blogImageSize} />
+                {/* <Image source={{uri:item._embedded['wp:featuredmedia'][0].source_url}} style={styles.blogImageSize} /> */}
+                {item._embedded && item._embedded['wp:featuredmedia'] && item._embedded['wp:featuredmedia'][0] ? (
+      // Display the featured image
+      <Image source={{ uri: item._embedded['wp:featuredmedia'][0].source_url }} style={styles.blogImageSize} />
+    ) : (
+      // Display the default image
+      <Image source={{uri:'https://app.shohozseba.com/icons/favicon-128x128.png'}} style={styles.blogImageSize} />
+    )}
                 <Text style={[typo.h4r, { width: 100 }]}>{this.limitTitle(item.title.rendered)}</Text>
               </Pressable>
             </CardHalfWidthNp>

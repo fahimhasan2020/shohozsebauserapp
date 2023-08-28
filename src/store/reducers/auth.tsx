@@ -10,6 +10,7 @@ const data = {
     'id':'',
     'lat':'',
     'lng':'',
+    "locationName":"Loading ...",
     'details':"",
     'tradeLicance':'',
     'profilePicture':'',
@@ -39,6 +40,7 @@ const reducer = (state = data, action:any) => {
                 ...state,
                 lat:action.logged.latitude,
                 lng:action.logged.longitude,
+                locationName:action.logged.locationName
             };
         case 'LOGIN':
             AsyncStorage.setItem('loggedIn', "true");

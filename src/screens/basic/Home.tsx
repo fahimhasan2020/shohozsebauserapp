@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View,Pressable,StatusBar,Image,PermissionsAndroid,TextInput, Dimensions,ScrollView } from 'react-native'
+import { Text, StyleSheet, View,Pressable,StatusBar,Image,PermissionsAndroid,TextInput, Dimensions,ScrollView,Alert,Modal, } from 'react-native'
 import {connect} from "react-redux"
 import Head from '../../components/Head'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { typo } from '../../ui/typo'
 import { shadows } from '../../ui/shadow'
 import { colors } from '../../constants/colors'
-import {marginBottomMedium, marginLeftSmall, marginTopMedium, marginTopSmall, paddingBottomMedium, paddingLeftMedium, paddingMedium, paddingSmall, paddingTopMedium} from "../../ui/spacing"
+import {marginBottomMedium, marginLeftSmall, marginTopMedium, marginTopSmall, paddingBottomMedium, paddingLeftMedium, paddingTopMedium} from "../../ui/spacing"
 import Entypo from "react-native-vector-icons/Entypo"
 import { row } from '../../ui/row'
 import Geolocation from '@react-native-community/geolocation';
-import { MAPBOX_API_ENDPOINT,MAPBOX_ACCESS_TOKEN } from '../../constants/urls'
 import Discounts from '../../components/Discounts'
+import Geocoder from 'react-native-geocoding';
 class Home extends Component {
   state = {
     position:null,
@@ -36,29 +36,50 @@ class Home extends Component {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('Location permission granted.');
-        Geolocation.getCurrentPosition(
+       await Geolocation.getCurrentPosition(
           async(pos) => {
             this.setState({position:pos});
             console.log(pos);
-  
-            // Make a request to the Mapbox Geocoding API with the latitude and longitude
             const { latitude, longitude } = pos.coords;
-            this.props.changeLocation({latitude:latitude,longitude:longitude});
-            const url = `${MAPBOX_API_ENDPOINT}/${longitude},${latitude}.json?access_token=${MAPBOX_ACCESS_TOKEN}`;
-            const response = await fetch(url);
-            const data = await response.json();
+            
+            Geocoder.init('AIzaSyBJlwnaNMA01U2K7bUthv4BTs3lygMSyRg');
+            Geocoder.from(latitude, longitude)
+              .then((json) => {
+                console.log(json);
+                const addressComponent = json.results[0].address_components;
+                const formattedAddress = json.results[0].formatted_address;
+                this.props.changeLocation({latitude:latitude,longitude:longitude,locationName:formattedAddress});
+                let locationDetails = {
+                  formattedAddress,
+                  neighborhood: '',
+                  city: '',
+                  postalCode: '',
+                  country: '',
+                };
   
-            // Extract the location name and other details from the response data
-            const { features } = data;
-            if (features && features.length > 0) {
-              const { place_name, text, place_type, context } = features[0];
-              console.log('Location:', text);
-              this.setState({locationName:text});
-              console.log('Details:', { text, place_type, context });
-            }
+                // Iterate over address components to find the desired information
+                for (let i = 0; i < addressComponent.length; i++) {
+                  const componentTypes = addressComponent[i].types;
+  
+                  if (componentTypes.includes('neighborhood')) {
+                    locationDetails.neighborhood = addressComponent[i].long_name;
+                  } else if (componentTypes.includes('locality')) {
+                    locationDetails.city = addressComponent[i].long_name;
+                  } else if (componentTypes.includes('postal_code')) {
+                    locationDetails.postalCode = addressComponent[i].long_name;
+                  } else if (componentTypes.includes('country')) {
+                    locationDetails.country = addressComponent[i].long_name;
+                  }
+                }
+  
+                console.log('Location Details:', locationDetails);
+                const shotAddress = locationDetails.formattedAddress.slice(0,40);
+                this.setState({locationName:shotAddress});
+              })
+              .catch((error) => console.warn(error));
           },
           (error) => console.log(error),
-          { enableHighAccuracy: true }
+          { enableHighAccuracy: true,timeout:30000  }
         );
       } else {
         console.log('Location permission denied.');
@@ -74,10 +95,9 @@ class Home extends Component {
         <StatusBar barStyle={'dark-content'} backgroundColor={'#ffffff'} />
         <Head navigation={this.props.navigation} />
 
-        {/* <Pressable onPress={()=>{this.props.logout(false)}}><Text>Hi</Text></Pressable> */}
-        <Pressable onPress={()=>{this.props.navigation.navigate('LocationSet')}} style={styles.location}>
+        <Pressable onPress={()=>{this.props.changeLoading(true);this.props.navigation.navigate('LocationSet')}} style={styles.location}>
           <Entypo name="location-pin" size={20} color={colors.theme} />
-          <Text style={[typo.p,marginLeftSmall]}>{this.state.locationName}</Text>
+          <Text style={[typo.p,marginLeftSmall]}>{this.props.locationName}</Text>
         </Pressable>
         <View style={styles.searchContainer}>
           <TextInput onFocus={()=>{this.props.navigation.navigate('Search')}} value={this.state.search} onChangeText={(value)=>{this.setState({search:value})}} style={styles.searchInput} placeholder='Enter service code or doctor name' />
@@ -123,7 +143,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
       accessToken : state.auth.accessToken,
-      host: state.auth.host
+      host: state.auth.host,
+      locationName:state.auth.locationName
   }
 };
 
@@ -174,5 +195,46 @@ const styles = StyleSheet.create({
     marginLeft:25,
     marginRight:25,
 
-  }
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
 })

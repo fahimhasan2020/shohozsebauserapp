@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         padding:10,
+        paddingLeft:20,
+        paddingRight:30
     },
     centralLogo:{
         height:40,
