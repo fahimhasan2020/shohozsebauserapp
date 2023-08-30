@@ -9,7 +9,7 @@ import {
 import React, { Component } from 'react'
 import {connect} from "react-redux"
 import OTPInputView from '@twotalltotems/react-native-otp-input'
-import { LoginManager,Profile } from "react-native-fbsdk-next";
+import { LoginManager,Profile,AccessToken } from "react-native-fbsdk-next";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import { row } from '../../ui/row';
@@ -31,19 +31,35 @@ export class Login extends Component {
     currentUser:{}
   }
 
+  initUser(token) {
+    fetch('https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' + token)
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+        
+    })
+    .catch((e) => {
+      console.log('why not',e);
+    })
+  }
+
   loginWithFacebook = () =>{
     
     console.log('called auto');
-    LoginManager.logInWithPermissions(["public_profile"]).then(
+    LoginManager.logInWithPermissions(["public_profile","email"]).then(
       (result)=> {
         if (result.isCancelled) {
           console.log("Login cancelled");
         } else {
           this.props.changeLoading(true);
           const currentProfile = Profile.getCurrentProfile().then(
-            (currentProfile)=> {
+            async(currentProfile)=> {
               if (currentProfile) {
                 console.log(currentProfile);
+                await AccessToken.getCurrentAccessToken().then((data) => {
+                  const { accessToken } = data;
+                  this.initUser(accessToken)
+                })
                 fetch(this.props.host+'social/login',{
                   method:"POST",
                   headers:{"Content-type":"application/json","Accept":"application/json"},

@@ -21,5 +21,5 @@ import DoctorSingle from "../screens/basic/DoctorSingle";
 import CallScreen from "../screens/basic/CallScreen";
 import LocationSet from "../screens/basic/LocationSet";
 import PaymentScreen from "../screens/basic/PaymentScreen";
-
-export {Home,History,CallScreen,LocationSet,PaymentScreen,Search,DoctorSingle,Cart,SingleDoctorCategory,Medicine,BloodDonation,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider,Splash,DoctorCategories,NearestDoctors,NoItemAvailable,Profile}
+import Prescriptions from "../screens/basic/Prescriptions";
+export {Prescriptions,Home,History,CallScreen,LocationSet,PaymentScreen,Search,DoctorSingle,Cart,SingleDoctorCategory,Medicine,BloodDonation,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider,Splash,DoctorCategories,NearestDoctors,NoItemAvailable,Profile}

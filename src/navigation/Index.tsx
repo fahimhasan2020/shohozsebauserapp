@@ -14,7 +14,7 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import {connect} from "react-redux"
 import store from "../store/store"
 import Loader from '../components/Loader'
-import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen} from "./Src"
+import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen, Prescriptions} from "./Src"
 import { colors } from '../constants/colors'
 const StackLogin = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -50,7 +50,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         label="Prescriptions"
         labelStyle={{ color: '#2b2a2a' }}
-        onPress={() => props.navigation.navigate('NoItemAvailable',{ title: 'Prescription', })}
+        onPress={() => props.navigation.navigate('Prescriptions',{ title: 'Prescription', })}
         icon={() => <AntDesign name="filetext1" size={30} color={colors.theme} />}
       />
       <DrawerItem
@@ -146,6 +146,7 @@ function HomeNavigations() {
         <StackLogin.Screen name="CallScreen" component={CallScreen} />
         <StackLogin.Screen name="LocationSet" component={LocationSet} />
         <StackLogin.Screen name="PaymentScreen" component={PaymentScreen} />
+        <StackLogin.Screen name="Prescriptions" component={Prescriptions} />
       </StackLogin.Navigator>)
     }
 
