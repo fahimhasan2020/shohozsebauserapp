@@ -12,7 +12,12 @@ export default class BloodDonation extends Component {
       <ScrollView contentContainerStyle={styles.container}>
         <Head navigation={this.props.navigation} />
         <View style={{flex:1,backgroundColor:'white'}}>
-          <Text style={[typo.p,{marginLeft:20,marginBottom:20,marginTop:30}]}>Recent Blood requests</Text>
+          <Pressable onPress={()=>this.props.navigation.navigate('CreateBloodRequest')} style={{marginLeft:20,marginBottom:20,marginTop:30,width:250,alignItems:'center',borderRadius:20,elevation:3}}>
+            <Image source={require('../../assets/blooddonatebg.jpg')} style={{height:120,width:250,borderRadius:20}} />
+            <View style={{height:120,width:250,position:'absolute',top:0,left:0,backgroundColor:'rgba(0,0,0,0.3)',borderRadius:20}}></View>
+            <Text style={{color:'white',position:'absolute',top:40,left:50,fontSize:20}}>Request for blood</Text>
+          </Pressable>
+          <Text style={[typo.p,{marginLeft:20,marginBottom:20,marginTop:30}]}>Blood request near you</Text>
           <View style={{paddingLeft:20}}>
 
             <View style={[{width:230,height:280,backgroundColor:'#fff',borderRadius:15},shadows.smallShadow]}>

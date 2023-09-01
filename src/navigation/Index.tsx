@@ -14,8 +14,9 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import {connect} from "react-redux"
 import store from "../store/store"
 import Loader from '../components/Loader'
-import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen, Prescriptions} from "./Src"
+import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen, Prescriptions, CreateBloodRequest} from "./Src"
 import { colors } from '../constants/colors'
+import { DonorListMap } from '../components/DonorListMap'
 const StackLogin = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const whatsapp = "+8801711432259"
@@ -147,6 +148,8 @@ function HomeNavigations() {
         <StackLogin.Screen name="LocationSet" component={LocationSet} />
         <StackLogin.Screen name="PaymentScreen" component={PaymentScreen} />
         <StackLogin.Screen name="Prescriptions" component={Prescriptions} />
+        <StackLogin.Screen name="CreateBloodRequest" component={CreateBloodRequest} />
+        <StackLogin.Screen name="DonorListMap" component={DonorListMap} />
       </StackLogin.Navigator>)
     }
 

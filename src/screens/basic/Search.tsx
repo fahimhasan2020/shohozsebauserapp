@@ -4,6 +4,7 @@ import StackHeader from '../../components/StackHeader'
 import { colors } from '../../constants/colors'
 import { connect } from 'react-redux'
 import AntDesign from "react-native-vector-icons/AntDesign"
+import DoctorList from '../../components/DoctorList'
 class Search extends Component {
   state ={
     search:'',
@@ -22,7 +23,7 @@ class Search extends Component {
 
     fetch("https://admin.shohozseba.com/user/search/doctor/"+text, requestOptions)
       .then(response => response.json())
-      .then(result => console.log(result))
+      .then(result => {console.log(result);this.setState({results:result})})
       .catch(error => console.log('error', error));
   }
   render() {
@@ -30,35 +31,9 @@ class Search extends Component {
       <View style={styles.container}>
         <StackHeader navigation={this.props.navigation}  />
         <View style={styles.searchContainer}>
-          <TextInput onFocus={()=>{this.props.navigation.navigate('Search')}} value={this.state.search} onChangeText={(value)=>{this.setState({search:value})}} style={styles.searchInput} placeholder='Enter service code or doctor name' />
+          <TextInput onFocus={()=>{this.props.navigation.navigate('Search')}} value={this.state.search} onChangeText={(value)=>{this.setState({search:value});if(value.length>2){this.search(value);}}} style={styles.searchInput} placeholder='Enter service code or doctor name' />
         </View>
-        <View style={{width:'90%',alignSelf:'center',padding:10,height:230,backgroundColor:'white',borderRadius:5,elevation:3,flexDirection:'row'}}>
-          <View>
-            <Image source={{uri:'https://admin.shohozseba.com/public/images/64eea9be1a385_portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg'}} style={{height:50,width:50,borderRadius:5}} />
-            <Text style={{fontSize:9,color:'#adadad',fontWeight:'bold',marginTop:5}}>7+ years </Text>
-            <Text style={{fontSize:8,color:'#000',fontWeight:'bold'}}>Experience</Text>
-          </View>
-          <View style={{paddingLeft:20,width:'90%'}}>
-            <View style={{backgroundColor:'blueviolet',padding:3,width:30,borderRadius:5,position:'absolute',right:15,top:0}}>
-              <Text style={{color:'white',fontSize:8}}>Online</Text>
-            </View>
-          <Text style={{fontSize:14,color:'#000',fontWeight:'bold'}}>Dr. Safwanur rahman</Text>
-          <Text style={{fontSize:11,color:'#000',fontWeight:'bold'}}>MBBS,FCPS</Text>
-          
-          <Text style={{fontSize:12,color:'blueviolet',opacity:0.5,marginTop:20}}>Darmatology, Generel physic</Text>
-          <Text style={{fontSize:11,color:'#000',opacity:0.5,marginTop:30}}>Work in</Text>
-          <Text style={{fontSize:11,color:'#000',opacity:0.5}}>Dhaka medical college, Cariac unit</Text>
-          <Pressable style={{marginTop:20,flexDirection:'row'}}>
-            <AntDesign name="videocamera" size={14} color={'blueviolet'} />
-            <Text style={{fontSize:11,color:'blueviolet',opacity:0.5,marginLeft:10}}>Call for video consultation</Text>
-          </Pressable>
-          
-          </View>
-        </View>
-        {/* <View style={styles.content}>
-            <Image source={require('../../assets/notavailable.jpg')} style={styles.iconSize} />
-            <Text style={styles.textStyle}> No item available </Text>
-        </View> */}
+        <DoctorList doctors={this.state.results} />
       </View>
     )
   }

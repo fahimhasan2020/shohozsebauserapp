@@ -14,7 +14,7 @@ class DoctorCategories extends Component {
   }
   componentDidMount(): void {
       fetch(this.props.host+'doctordepartments').then((response)=>response.json()).then((responseJson)=>{
-        console.log(responseJson);
+        console.log('categoriesos',responseJson);
         this.setState({categories:responseJson});
         this.props.changeLoading(false);
       }).catch(error=>{
@@ -32,7 +32,7 @@ class DoctorCategories extends Component {
         </View>
          <View style={[row,{ flexWrap: 'wrap', padding: 5 }]}>
           {this.state.categories.map((item,index)=>(<Pressable onPress={()=>{
-            this.props.navigation.navigate('SingleDoctorCategory',{title:item.name});
+            this.props.navigation.navigate('SingleDoctorCategory',{title:item.name,categoryId:item.id});
           }} style={[styles.card,shadows.smallShadow]}>
             <Image source={{uri:baseUri+'images/departments/'+item.imagepath}} style={styles.cardImage} />
             <Text style={[typo.p,{width:80,alignItems:'center',textAlign:'center',alignSelf:'center',color:colors.theme},marginTopSmall]}>{item.name}</Text>
