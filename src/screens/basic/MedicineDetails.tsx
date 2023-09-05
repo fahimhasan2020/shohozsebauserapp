@@ -35,6 +35,7 @@ class MedicineDetails extends Component {
       "total_unit": this.state.medicineData.unit_value,
       "quantity": 1,
       "total_unit_price":this.state.medicineData.unit_price,
+      "unit_price":this.state.medicineData.unit_price,
       "thumb": this.state.medicineData.picture
     };
     const { cart } = this.props;

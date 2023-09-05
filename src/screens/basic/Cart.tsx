@@ -6,12 +6,14 @@ import { connect } from 'react-redux'
 class Cart extends Component {
  // Function to increase quantity for an item
 increaseQuantity = (index) => {
+  
   const updatedCart = [...this.props.cart];
-  const item = updatedCart[index].item;
-
+  const item = updatedCart[index];
+  console.log('called',item);
   if (item && item.total_unit_price) {
     updatedCart[index].quantity += 1;
-    updatedCart[index].total_unit_price = (parseFloat(item.total_unit_price) * updatedCart[index].quantity).toFixed(2);
+    const ultimate = updatedCart[index].quantity*parseInt(updatedCart[index].unit_price);
+    updatedCart[index].total_unit_price = ultimate.toString();
     this.props.changeCart(updatedCart);
   }
 };
@@ -20,11 +22,11 @@ increaseQuantity = (index) => {
 decreaseQuantity = (index) => {
   const updatedCart = [...this.props.cart];
   if (updatedCart[index].quantity > 1) {
-    const item = updatedCart[index].item;
+    const item = updatedCart[index];
 
     if (item && item.total_unit_price) {
       updatedCart[index].quantity -= 1;
-      updatedCart[index].total_unit_price = (parseFloat(item.total_unit_price) * updatedCart[index].quantity).toFixed(2);
+      updatedCart[index].total_unit_price = updatedCart[index].quantity*parseInt(updatedCart[index].unit_price);
       this.props.changeCart(updatedCart);
     }
   }
