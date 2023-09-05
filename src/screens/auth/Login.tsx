@@ -1,11 +1,6 @@
 import { Text, StyleSheet, View,StatusBar,Image,ActivityIndicator,Dimensions,TextInput,TouchableOpacity,Linking,ToastAndroid,Pressable } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Fontisto from "react-native-vector-icons/Fontisto"
-import {
-  getHash,
-  startOtpListener,
-  useOtpVerify,
-} from 'react-native-otp-verify';
 import React, { Component } from 'react'
 import {connect} from "react-redux"
 import OTPInputView from '@twotalltotems/react-native-otp-input'
@@ -15,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 import { row } from '../../ui/row';
 import { marginTopBig, marginTopMedium, marginTopSmall } from '../../ui/spacing';
 import { GoogleSignin,statusCodes,GoogleSigninButton   } from '@react-native-google-signin/google-signin';
-
+import PushNotification, { Importance } from 'react-native-push-notification';
 
 
 export class Login extends Component {
@@ -28,7 +23,41 @@ export class Login extends Component {
     requesting:false,
     otpRequesting:false,
     userinfo:{},
-    currentUser:{}
+    currentUser:{},
+    pushToken:''
+  }
+
+  notificationConfigure = () => {
+    PushNotification.configure({
+      onRegister: (token) => {
+        console.log("TOKEN:", token);
+        //setPushToken(token.token);
+        this.setState({pushToken:token.token});
+      },
+      onNotification: (notification) => {
+        console.log("NOTIFICATION:", notification);
+        PushNotification.localNotification({
+          channelId: '11223',
+          title: notification.title,
+          message: notification.message,
+          ignoreInForeground: false,
+        })
+      },
+      onAction: function (notification) {
+        console.log("ACTION:", notification.action);
+        console.log("NOTIFICATION:", notification);
+      },
+      onRegistrationError: function (err) {
+        console.error(err.message, err);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
   }
 
   initUser(token) {
@@ -67,7 +96,8 @@ export class Login extends Component {
                     email:'fb'+currentProfile.userID,
                     first_name:currentProfile.firstName,
                     last_name:currentProfile.lastName,
-                    profile_picture:'https://i.pinimg.com/736x/15/ca/0c/15ca0c352322cb9101e20e423ec34554.jpg'
+                    profile_picture:'https://i.pinimg.com/736x/15/ca/0c/15ca0c352322cb9101e20e423ec34554.jpg',
+                    push_token:this.state.pushToken
                   })
                 }).then((response)=>response.json()).then((responseJson)=>{
                   console.log(responseJson);
@@ -76,6 +106,7 @@ export class Login extends Component {
                     this.props.changeProfile(responseJson.user);
                     this.props.changeLogged(true);
                     this.props.changeLoading(false);
+                    this.props.changeNewUser(responseJson.first_time);
                   }else{
                     this.props.changeLoading(false);
                   }
@@ -92,16 +123,13 @@ export class Login extends Component {
     );
   }
 
-
   loginWithGoogle = async() =>{
     try {
       await GoogleSignin.configure({
         webClientId: '129996174650-etl3rai21fql983dpmm5f761evlm05bl.apps.googleusercontent.com',
         forceCodeForRefreshToken: true,
        });
-     
       await GoogleSignin.hasPlayServices();
-      
       const userInfo = await GoogleSignin.signIn();
       this.setState({ userInfo });
       if(userInfo.hasOwnProperty('idToken')){
@@ -113,7 +141,8 @@ export class Login extends Component {
               email:'gl'+userInfo.user.id,
               first_name:userInfo.user.givenName,
               last_name:userInfo.user.familyName,
-              profile_picture:'https://i.pinimg.com/736x/15/ca/0c/15ca0c352322cb9101e20e423ec34554.jpg'
+              profile_picture:'https://i.pinimg.com/736x/15/ca/0c/15ca0c352322cb9101e20e423ec34554.jpg',
+              push_token:this.state.pushToken
             })
           }).then((response)=>response.json()).then((responseJson)=>{
             console.log(responseJson);
@@ -121,6 +150,7 @@ export class Login extends Component {
               this.props.changeAccessToken(responseJson.token);
               this.props.changeProfile(responseJson.user);
               this.props.changeLogged(true);
+              this.props.changeNewUser(responseJson.first_time);
             }
           })
         
@@ -140,10 +170,6 @@ export class Login extends Component {
 
   }
 
-  
-
-
-
   login=()=>{
     this.setState({requesting:true});
     console.log('called auto');
@@ -153,7 +179,7 @@ export class Login extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({phoneNumber: this.state.phoneNumber})
+      body: JSON.stringify({phoneNumber: this.state.phoneNumber,push_token:this.state.pushToken})
     }).then((response)=>response.json()).then((responseJson)=>{
       console.log(responseJson);
       if(responseJson.hasOwnProperty("errors")){
@@ -174,16 +200,9 @@ export class Login extends Component {
         }
       
       }else{
+        this.props.changeNewUser(responseJson.first_time);
         this.setState({otp:true,serverOtp:responseJson.otp,requesting:false});
         ToastAndroid.show("Otp has been send to your number.",ToastAndroid.SHORT,ToastAndroid.BOTTOM);
-        startOtpListener(message => {
-          console.log(message);
-          const otp = /(\d{4})/g.exec(message)[1];
-          this.setState({finalOtp:otp,otpInput:otp});
-          setTimeout(()=>{
-            this.verifyOtp();
-          },1000);
-        });
       }
     }).catch(e=>{
       this.setState({requesting:false});
@@ -223,13 +242,20 @@ export class Login extends Component {
 
   
   componentDidMount = () =>{
-    getHash().then(hash => {
-    //console.log(hash);
-    }).catch(console.log);
+    PushNotification.createChannel(
+      {
+        channelId: "11223",
+        channelName: "Default Channel",
+        channelDescription: "A channel to categorise your notifications",
+        playSound: true,
+        soundName: "default",
+        importance: Importance.HIGH,
+        vibrate: true,
+      },
+      (created) => console.log(`createChannel returned '${created}'`)
+    );
+    this.notificationConfigure();
   }
-
-
-
   render() {
     return (
       <View style={styles.container}>
@@ -284,7 +310,8 @@ const mapDispatchToProps = dispatch => {
       changeLogged : (value) => {dispatch({type:'LOGIN',logged: value})},
       changeProfile : (value) => {dispatch({type:'PROFILE_CHANGE',user: value})},
       changeActivity : (value) => {dispatch({type:'CHANGE_ACTIVITY',stata: value})},
-      changeLoading : (value) => {dispatch({type:'CHANGE_Loading',loading: value})},
+      changeLoading : (value) => {dispatch({type:'LOADING',loading: value})},
+      changeNewUser : (value) => {dispatch({type:'NEWUSER',payload: value})},
   };
 };
 

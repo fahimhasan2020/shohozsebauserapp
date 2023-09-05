@@ -1,6 +1,6 @@
 import React, { Component,useState,useEffect } from 'react'
 import { Text, StyleSheet, View,Linking,Image,ToastAndroid } from 'react-native'
-import {NavigationContainer} from "@react-navigation/native"
+import {NavigationContainer,useNavigation} from "@react-navigation/native"
 import {createStackNavigator,CardStyleInterpolators} from "@react-navigation/stack"
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
@@ -16,7 +16,10 @@ import store from "../store/store"
 import Loader from '../components/Loader'
 import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen, Prescriptions, CreateBloodRequest} from "./Src"
 import { colors } from '../constants/colors'
-import { DonorListMap } from '../components/DonorListMap'
+import DonorListMap  from '../components/DonorListMap'
+import BloodDonationDetails from '../screens/basic/BloodDonationDetails'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import MedicineDetails from '../screens/basic/MedicineDetails'
 const StackLogin = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const whatsapp = "+8801711432259"
@@ -105,7 +108,7 @@ const CustomDrawerContent = (props) => {
       <DrawerItem
         label="Logout"
         labelStyle={{ color: '#2b2a2a' }}
-        onPress={() => store.dispatch(logoutAction)}
+        onPress={async() => {await AsyncStorage.setItem('loggedIn', "false");store.dispatch(logoutAction);}}
         icon={() => <MaterialIcons name="logout" size={30} color={colors.theme} />}
       />
     </DrawerContentScrollView>
@@ -126,6 +129,34 @@ function LoginNavigation() {
 }
 
 function HomeNavigations() {
+  const [initialPage,setInitialPage] = useState("HomeTab");
+  const [donationId,setDonationId] = useState(null);
+  const [medicineId,setMedicineId] = useState(null);
+  const navigation = useNavigation();
+  useEffect(()=>{
+    Linking.getInitialURL()
+          .then((url) => {
+            if (url) {
+            const parts = url.split('/');
+            const action = parts[parts.length - 2];
+            const id = parts[parts.length - 1];
+            switch (action) {
+              case 'bloodrequest':
+                navigation.navigate('BloodDonationDetails',{donationId:id});
+                break;
+              case 'medicinedetails':
+                navigation.navigate('MedicineDetails',{medicineId:id});
+                break;
+              default:
+                // this.props.navigation.navigate('Home');
+              }
+              
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+  },[])
   return (
     <StackLogin.Navigator screenOptions={{
         headerShown: false,
@@ -150,6 +181,8 @@ function HomeNavigations() {
         <StackLogin.Screen name="Prescriptions" component={Prescriptions} />
         <StackLogin.Screen name="CreateBloodRequest" component={CreateBloodRequest} />
         <StackLogin.Screen name="DonorListMap" component={DonorListMap} />
+        <StackLogin.Screen name="BloodDonationDetails"  initialParams={{ donationId }} component={BloodDonationDetails} />
+        <StackLogin.Screen name="MedicineDetails"  initialParams={{ medicineId }} component={MedicineDetails} />
       </StackLogin.Navigator>)
     }
 
@@ -289,3 +322,5 @@ const styles = StyleSheet.create({
     left:0
   }
 })
+
+

@@ -5,11 +5,12 @@ const data = {
     'accessToken':'',
     'loggedIn':false,
     'activity':true,
+    'newUser':false,
     'phoneNumber':'',
     'email':'',
     'id':'',
-    'lat':'',
-    'lng':'',
+    'lat':'23.777176',
+    'lng':'90.399452',
     "locationName":"Loading ...",
     'details':"",
     'tradeLicance':'',
@@ -18,7 +19,8 @@ const data = {
     'agoraAppId':'85944551dccc49a687206aebdccfc76c',
     'agoraToken':'007eJxTYNhSEyduUSpx+JhUtv2NKraoSy5Tvj315VfJlXC5dfOulrsCg4WppYmJqalhSnJysollopmFuZGBWWJqEpCflmxulpwtEpjSEMjIcKDGkYWRAQJBfDaG3My8jMQqBgYABJgejw==',
     'agoraAppSecret':'b6106ad415624a19afed254a9f56b6ba',
-    'channel':'minhaz'
+    'channel':'minhaz',
+    'cart':[]
 };
 
 const reducer = (state = data, action:any) => {
@@ -29,6 +31,16 @@ const reducer = (state = data, action:any) => {
             return {
                 ...state,
                 loggedIn: action.logged
+            };
+        case 'UPDATECART':
+            return {
+                ...state,
+                cart: action.payload
+            };
+        case 'NEWUSER':
+            return {
+                ...state,
+                newUser: action.payload
             };
         case 'LOADING':
             return {
@@ -43,7 +55,7 @@ const reducer = (state = data, action:any) => {
                 locationName:action.logged.locationName
             };
         case 'LOGIN':
-            AsyncStorage.setItem('loggedIn', "true");
+            AsyncStorage.setItem('loggedIn', action.logged.toString());
             return {
                 ...state,
                 loggedIn: action.logged

@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View,StatusBar,Image,Easing,Animated,LogBox,ToastAndroid } from 'react-native'
+import { Text, StyleSheet, View,StatusBar,Image,Easing,Animated,LogBox,ToastAndroid,Linking } from 'react-native'
 import React, { Component } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connect} from "react-redux"
@@ -37,6 +37,7 @@ export class Splash extends Component {
     useNativeDriver: true
   }
 ).start()
+
 const value = await AsyncStorage.getItem('loggedIn');
 const firstTime = await AsyncStorage.getItem('firstTime');
 if(value !== null && value !== undefined && value !== '') {
@@ -56,12 +57,14 @@ if(value !== null && value !== undefined && value !== '') {
           console.log(responseJson.user);
           setTimeout(()=>{ this.props.changeLogged(false); 
           this.props.changeProfile(responseJson.user);
-          this.props.changeLogged(true);},2000);
+          this.props.changeLogged(true);
+        },2000);
           if(responseJson.user.active == 1){
             this.props.changeActivity(true);
           }else{
             this.props.changeActivity(false);
           }
+          
         }).catch(e=>{
           ToastAndroid.showWithGravity(
            "Failed to connect internet",

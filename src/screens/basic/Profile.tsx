@@ -14,8 +14,9 @@ class Profile extends Component {
     lastName:'',
     dp:'',
     blood_group:'',
-    blood_groups:['+A','-A','+O','-O','+AB','-AB','+B','-B'],
-    loading:false
+    blood_groups:['A+','A-','o+','o-','AB+','AB-','B+','B-'],
+    loading:false,
+    currentUser:null
   }
   updateProfile = async()=>{
     const accessTokens = await AsyncStorage.getItem("token");
@@ -36,22 +37,40 @@ class Profile extends Component {
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Authorization", "Bearer "+accessTokens);
-    var formdata = new FormData();
-    formdata.append("first_name", this.state.firstName);
-    formdata.append("last_name", this.state.lastName);
-    formdata.append("blood_group",this.state.blood_group);
-    formdata.append("userId", this.props.userId);
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
-      body: formdata,
+      body: JSON.stringify({
+        "first_name": this.state.firstName,
+        "last_name": this.state.lastName,
+        "blood_group":this.state.blood_group,
+        "userId": this.props.userId
+      }),
       redirect: 'follow'
     };
-    console.log('body:',this.props.host);
     fetch(this.props.host+"update/profile", requestOptions)
       .then(response => response.json())
-      .then(result => {console.log(result);this.setState({loading:false});})
+      .then(result => {console.log(result);this.setState({loading:false});ToastAndroid.show("Profile Updated",ToastAndroid.SHORT);})
       .catch(error => {console.log('error', error);this.setState({loading:false})});
+  }
+  componentDidMount =async()=> {
+    const accessTokens = await AsyncStorage.getItem("token");
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(this.props.host+"get/user/data/"+this.props.userId, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        this.setState({firstName:result.first_name,lastName:result.last_name,blood_group:result.blood_group !== null?result.blood_group:""});
+      })
+      .catch(error => console.log('error', error)); 
   }
   render() {
     return (
@@ -102,6 +121,7 @@ const mapStateToProps = state => {
       accessToken : state.auth.accessToken,
       host: state.auth.host,
       userId: state.auth.id,
+      name: state.auth.name,
   }
 };
 

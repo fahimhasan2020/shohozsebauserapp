@@ -5,6 +5,9 @@ buildscript {
         compileSdkVersion = 33
         targetSdkVersion = 33
         ndkVersion = "23.1.7779620"
+        googlePlayServicesVersion = "+"
+        firebaseMessagingVersion = "21.1.0"
+        supportLibVersion = "23.1.1"
     }
     repositories {
         google()

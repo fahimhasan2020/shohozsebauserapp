@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View,Pressable,StatusBar,Image,PermissionsAndroid,TextInput, Dimensions,ScrollView,Alert,Modal, } from 'react-native'
+import { Text, StyleSheet, View,Pressable,StatusBar,Image,PermissionsAndroid,TextInput, Dimensions,ScrollView,Alert,Modal,Linking } from 'react-native'
 import {connect} from "react-redux"
 import Head from '../../components/Head'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -18,11 +18,13 @@ class Home extends Component {
     locationName:'Loading',
     search:''
   }
-  componentDidMount = async(): void => {
+  componentDidMount = async() => {
      await this.getCurrentPosition();
+     if(this.props.newUser){
+      this.props.navigation.navigate('Profile');
+     }
+     
   }
-
-
   getCurrentPosition = async() => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -39,16 +41,32 @@ class Home extends Component {
        await Geolocation.getCurrentPosition(
           async(pos) => {
             this.setState({position:pos});
-            console.log(pos);
+            const users = await AsyncStorage.getItem("id");
+            console.log("posi",users);
             const { latitude, longitude } = pos.coords;
-            
+            var requestOptions = {
+              method: 'POST',
+              headers: {"Content-Type":"application/json","Accept":"application/json"},
+              body: JSON.stringify({
+                'lat':latitude,
+                'lng':longitude,
+                'user_id':users
+              }),
+              redirect: 'follow'
+            };
+           
+            fetch(this.props.host+"update/coordinates", requestOptions)
+              .then(response => response.json())
+              .then(result => {console.log(result)})
+              .catch(error => console.log('error granda', error));
+
             Geocoder.init('AIzaSyBJlwnaNMA01U2K7bUthv4BTs3lygMSyRg');
             Geocoder.from(latitude, longitude)
               .then((json) => {
                 console.log(json);
                 const addressComponent = json.results[0].address_components;
                 const formattedAddress = json.results[0].formatted_address;
-                this.props.changeLocation({latitude:latitude,longitude:longitude,locationName:formattedAddress});
+                this.props.changeLocation({latitude:latitude,longitude:longitude,locationName:formattedAddress.slice(0,50)});
                 let locationDetails = {
                   formattedAddress,
                   neighborhood: '',
@@ -79,7 +97,7 @@ class Home extends Component {
               .catch((error) => console.warn(error));
           },
           (error) => console.log(error),
-          { enableHighAccuracy: true,timeout:30000  }
+          { enableHighAccuracy: false,timeout:30000  }
         );
       } else {
         console.log('Location permission denied.');
@@ -88,7 +106,6 @@ class Home extends Component {
       console.log(error);
     }
   };
-
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -97,7 +114,7 @@ class Home extends Component {
 
         <Pressable onPress={()=>{this.props.changeLoading(true);this.props.navigation.navigate('LocationSet')}} style={styles.location}>
           <Entypo name="location-pin" size={20} color={colors.theme} />
-          <Text style={[typo.p,marginLeftSmall]}>{this.props.locationName}</Text>
+          <Text style={[typo.p,marginLeftSmall,{width:200}]}>{this.props.locationName}</Text>
         </Pressable>
         <View style={styles.searchContainer}>
           <TextInput onFocus={()=>{this.props.navigation.navigate('Search')}} value={this.state.search} onChangeText={(value)=>{this.setState({search:value})}} style={styles.searchInput} placeholder='Enter service code or doctor name' />
@@ -144,7 +161,8 @@ const mapStateToProps = state => {
   return {
       accessToken : state.auth.accessToken,
       host: state.auth.host,
-      locationName:state.auth.locationName
+      locationName:state.auth.locationName,
+      newUser:state.auth.newUser
   }
 };
 
@@ -189,7 +207,7 @@ const styles = StyleSheet.create({
   },
   banner:{
     width:Dimensions.get('window').width/1.15,
-    height:Dimensions.get('window').height/8.5,
+    height:Dimensions.get('window').height/5,
     borderRadius:5,
     marginBottom:20,
     marginLeft:25,

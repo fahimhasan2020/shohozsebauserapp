@@ -143,7 +143,7 @@ class CreateBloodRequest extends Component {
             this.props.changeLoading(false);
             ToastAndroid.show("Blood request created successfully",ToastAndroid.SHORT);
             if(result.subscribers.length>0){
-                this.props.navigation.navigate('DonorListMap',{subscribers:result.subscribers,lat:this.state.lat,lng:this.state.lng})
+                this.props.navigation.navigate('DonorListMap',{subscribers:result.subscribers,lat:this.state.lat,lng:this.state.lng,requestId:result.data.id});
             }else{
                 this.props.navigation.goBack();
             }
@@ -228,7 +228,7 @@ const mapDispatchToProps = dispatch => {
         changeLogged : (value) => {dispatch({type:'LOGIN',logged: value})},
         changeProfile : (value) => {dispatch({type:'PROFILE_CHANGE',user: value})},
         changeActivity : (value) => {dispatch({type:'CHANGE_ACTIVITY',stata: value})},
-        changeLoading : (value) => {dispatch({type:'CHANGE_Loading',loading: value})},
+        changeLoading : (value) => {dispatch({type:'LOADING',loading: value})},
     };
   };
   
@@ -240,7 +240,7 @@ const mapDispatchToProps = dispatch => {
     }
   };
   
-  export default connect(mapStateToProps,mapDispatchToProps)(CreateBloodRequest);
+export default connect(mapStateToProps,mapDispatchToProps)(CreateBloodRequest);
 
 const styles = StyleSheet.create({
     container:{
