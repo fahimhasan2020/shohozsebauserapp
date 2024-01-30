@@ -14,12 +14,15 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import {connect} from "react-redux"
 import store from "../store/store"
 import Loader from '../components/Loader'
-import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen, Prescriptions, CreateBloodRequest} from "./Src"
+import {Home,NearestDoctors,History,Cart,Medicine,BloodDonation,LocationSet,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider, Splash, DoctorCategories, NoItemAvailable, Profile, Search, SingleDoctorCategory, DoctorSingle, CallScreen, PaymentScreen, Prescriptions, CreateBloodRequest, Notification} from "./Src"
 import { colors } from '../constants/colors'
 import DonorListMap  from '../components/DonorListMap'
 import BloodDonationDetails from '../screens/basic/BloodDonationDetails'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import MedicineDetails from '../screens/basic/MedicineDetails'
+import CheckOut from '../screens/basic/CheckOut'
+import SuccessPayment from '../screens/basic/SuccessPayment'
+import Settings from '../screens/account/Settings'
 const StackLogin = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const whatsapp = "+8801711432259"
@@ -94,6 +97,12 @@ const CustomDrawerContent = (props) => {
         icon={() => <FontAwesome name="whatsapp" size={30} color={colors.theme} />}
       />
       <DrawerItem
+        label="Settings"
+        labelStyle={{ color: '#2b2a2a' }}
+        onPress={() => props.navigation.navigate('Settings')}
+        icon={() => <FontAwesome name="gear" size={30} color={colors.theme} />}
+      />
+      <DrawerItem
         label="Refer and Earn"
         labelStyle={{ color: '#2b2a2a' }}
         onPress={() => {ToastAndroid.show("Service unavailable",ToastAndroid.SHORT)}}
@@ -155,7 +164,7 @@ function HomeNavigations() {
           })
           .catch((error) => {
             console.error(error);
-          });
+          });``
   },[])
   return (
     <StackLogin.Navigator screenOptions={{
@@ -164,6 +173,8 @@ function HomeNavigations() {
       }}>
         <StackLogin.Screen name="HomeTab" children={HomeTabs} />
         <StackLogin.Screen name="BMI" component={BMI} />
+        <StackLogin.Screen name="Notification" component={Notification} />
+        <StackLogin.Screen name="Settings" component={Settings} />
         <StackLogin.Screen name="DoctorCategories" component={DoctorCategories} />
         <StackLogin.Screen name="NearestDoctors" component={NearestDoctors} />
         <StackLogin.Screen name="IBW" component={IBW} />
@@ -183,6 +194,8 @@ function HomeNavigations() {
         <StackLogin.Screen name="DonorListMap" component={DonorListMap} />
         <StackLogin.Screen name="BloodDonationDetails"  initialParams={{ donationId }} component={BloodDonationDetails} />
         <StackLogin.Screen name="MedicineDetails"  initialParams={{ medicineId }} component={MedicineDetails} />
+        <StackLogin.Screen name="CheckOut"  initialParams={{ medicineId }} component={CheckOut} />
+        <StackLogin.Screen name="SuccessPayment"  initialParams={{ medicineId }} component={SuccessPayment} />
       </StackLogin.Navigator>)
     }
 
@@ -216,37 +229,37 @@ function HomeDrawer() {
         //setNotification(3);
       })
       return (
-        <HomeTab.Navigator  screenOptions={{ headerShown: false,tabBarShowLabel:false,tabBarStyle:{backgroundColor:'rgba(0,0,0,0.8)',elevation:0,height:60,position:'absolute',left:0,right:0,bottom:0},tabBarActiveTintColor:'#CCC',tabBarInactiveTintColor:'#FFF' }}>
+        <HomeTab.Navigator initialRouteName='Blood'  screenOptions={{ headerShown: false,tabBarShowLabel:false,tabBarStyle:{backgroundColor:'#fff',elevation:0,height:60,position:'absolute',left:0,right:0,bottom:0},tabBarActiveTintColor:'#454647',tabBarInactiveTintColor:'#ccc' }}>
           <HomeTab.Screen options={{
             tabBarIcon : ({color,size})=>(<View style={{alignItems:'center',justifyContent:'center',top:5}}>
-                    <Entypo name="home" size={size} color={color} />
-                    <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase'}}>Home</Text>
+                    <Entypo name="home" size={20} color={color} />
+                    <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase',marginTop:6}}>Home</Text>
                 </View>)
           }} name="Home" component={Home} />
           <HomeTab.Screen options={{
              tabBarIcon : ({color,size})=>(<View style={{alignItems:'center',justifyContent:'center',top:5}}>
-             <Fontisto name="doctor" size={size} color={color} />
-             <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase'}}>Doctors</Text>
+             <Fontisto name="doctor" size={20} color={color} />
+             <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase',marginTop:6}}>Doctors</Text>
          </View>)
           }} name="Services" component={Doctors} />
           <HomeTab.Screen options={{
              tabBarIcon : ({color,size})=>(<View style={{alignItems:'center',justifyContent:'center',top:5}}>
-             <Fontisto name="blood-drop" size={size} color={color} />
-             <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase'}}>Blood</Text>
+             <Fontisto name="blood-drop" size={20} color={color} />
+             <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase',marginTop:6}}>Blood</Text>
          </View>)
           }} name="Blood" component={BloodDonation} />
           <HomeTab.Screen 
           options={{
             tabBarIcon : ({color,size})=>(<View style={{alignItems:'center',justifyContent:'center',top:5}}>
-            <MaterialIcons name="medical-services" size={size} color={color} />
-            <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase'}}>Medicine</Text>
+            <MaterialIcons name="medical-services" size={20} color={color} />
+            <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase',marginTop:6}}>Medicine</Text>
         </View>)
           }} name="Medicine" component={Medicine} />
           <HomeTab.Screen 
           options={{
             tabBarIcon : ({color,size})=>(<View style={{alignItems:'center',justifyContent:'center',top:5}}>
-            <Fontisto name="player-settings" size={size} color={color} />
-            <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase'}}>More</Text>
+            <Fontisto name="player-settings" size={20} color={color} />
+            <Text style={{color:color,fontSize:10,fontWeight:'bold',textTransform:'uppercase',marginTop:6}}>More</Text>
         </View>)
           }} name="History" component={History} />
         </HomeTab.Navigator>

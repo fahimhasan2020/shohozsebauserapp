@@ -10,7 +10,7 @@ export class Splash extends Component {
     logoTextOpacity : new Animated.Value(0)
   }
 
-  componentDidMount = async()=>{
+  initiation = async()=>{
     LogBox.ignoreAllLogs();
     Animated.timing(
       this.state.spinValue,
@@ -100,6 +100,13 @@ if(value !== null && value !== undefined && value !== '') {
     
   }
   }
+
+  componentDidMount = async () => {
+    this.unsubscribe = this.props.navigation.addListener('focus', this.initiation);
+  };
+  componentWillUnmount(): void {
+    this.unsubscribe();
+  }
   
   spin = this.state.spinValue.interpolate({
     inputRange: [0, 1],
@@ -114,7 +121,7 @@ if(value !== null && value !== undefined && value !== '') {
            <Animated.Text style={{fontSize:20,fontWeight:'bold',color:'purple',textTransform:'uppercase',opacity:this.state.logoTextOpacity}}>Shohoz Seba</Animated.Text>
         </View>
        
-        <Animated.Text style={{position:'absolute',bottom:20,alignSelf:'center',fontWeight:'bold',color:'#ccc',opacity:this.state.logoTextOpacity}}>Developer By Dr. Minhaz</Animated.Text>
+        <Animated.Text style={{position:'absolute',bottom:20,alignSelf:'center',fontWeight:'bold',color:'#ccc',opacity:this.state.logoTextOpacity}}>Developed By Dr. Minhaz</Animated.Text>
       </View>
     )
   }

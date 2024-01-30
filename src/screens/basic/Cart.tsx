@@ -23,12 +23,14 @@ decreaseQuantity = (index) => {
   const updatedCart = [...this.props.cart];
   if (updatedCart[index].quantity > 1) {
     const item = updatedCart[index];
-
     if (item && item.total_unit_price) {
       updatedCart[index].quantity -= 1;
       updatedCart[index].total_unit_price = updatedCart[index].quantity*parseInt(updatedCart[index].unit_price);
       this.props.changeCart(updatedCart);
     }
+  }else{
+    updatedCart.splice(index,1);
+    this.props.changeCart(updatedCart);
   }
 };
 
@@ -59,7 +61,12 @@ decreaseQuantity = (index) => {
           />
            <View style={{flexDirection:'row',justifyContent:'space-between',width:'80%',alignSelf:'center',padding:10,backgroundColor:'white',position:'absolute',bottom:50,height:60,elevation:10,borderRadius:10,alignItems:'center'}}>
             <Text style={{color:'black'}}>Total {this.calculateTotalPrice()} BDT</Text>
-            <Pressable style={{padding:10,backgroundColor:colors.theme,width:80,borderRadius:10}}>
+            <Pressable onPress={()=>{
+              if(this.props.cart.length>0){
+                this.props.navigation.navigate('CheckOut');
+              }
+              
+            }} style={{padding:10,backgroundColor:colors.theme,width:80,borderRadius:10}}>
             <Text style={{color:'white'}}>Ceckout</Text>
            </Pressable>
            </View>

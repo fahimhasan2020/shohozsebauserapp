@@ -23,4 +23,6 @@ import LocationSet from "../screens/basic/LocationSet";
 import PaymentScreen from "../screens/basic/PaymentScreen";
 import Prescriptions from "../screens/basic/Prescriptions";
 import CreateBloodRequest from "../screens/basic/CreateBloodRequest";
-export {CreateBloodRequest,Prescriptions,Home,History,CallScreen,LocationSet,PaymentScreen,Search,DoctorSingle,Cart,SingleDoctorCategory,Medicine,BloodDonation,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider,Splash,DoctorCategories,NearestDoctors,NoItemAvailable,Profile}
+import Notification from "../screens/account/Notification";
+import Settings from "../screens/account/Settings";
+export {CreateBloodRequest,Notification,Prescriptions,Home,History,CallScreen,LocationSet,PaymentScreen,Search,DoctorSingle,Cart,SingleDoctorCategory,Medicine,BloodDonation,Doctors,BMI,DDC,IBW,PDT,Login,IntroSlider,Splash,DoctorCategories,NearestDoctors,NoItemAvailable,Profile}

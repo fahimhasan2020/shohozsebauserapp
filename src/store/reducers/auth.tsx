@@ -20,7 +20,8 @@ const data = {
     'agoraToken':'007eJxTYNhSEyduUSpx+JhUtv2NKraoSy5Tvj315VfJlXC5dfOulrsCg4WppYmJqalhSnJysollopmFuZGBWWJqEpCflmxulpwtEpjSEMjIcKDGkYWRAQJBfDaG3My8jMQqBgYABJgejw==',
     'agoraAppSecret':'b6106ad415624a19afed254a9f56b6ba',
     'channel':'minhaz',
-    'cart':[]
+    'cart':[],
+    'checkoutDetails':null
 };
 
 const reducer = (state = data, action:any) => {
@@ -36,6 +37,11 @@ const reducer = (state = data, action:any) => {
             return {
                 ...state,
                 cart: action.payload
+            };
+        case 'CHECKOUTDETAILS':
+            return {
+                ...state,
+                checkoutDetails: action.payload
             };
         case 'NEWUSER':
             return {
